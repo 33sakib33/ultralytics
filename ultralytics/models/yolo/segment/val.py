@@ -153,12 +153,11 @@ class SegmentationValidator(DetectionValidator):
                 gt_masks = F.interpolate(gt_masks[None], pred_masks.shape[1:], mode='bilinear', align_corners=False)[0]
                 gt_masks = gt_masks.gt_(0.5)
             print("in process batch");
-            
+            print(detections.shape);
             tabIdx=detections[:,5]==3;
-            
-            if len(tabIdx)>0:
-                print(tabIdx);
-                for i in tabIdx:
+            print(len(tabIdx));
+            for i in range(tabIdx):
+                if tabIdx[i]==True:
                     print("before")
                     print(torch.sum(pred_masks[i]))
                     pred_masks[i]=torch.tensor(convex_hull_image(pred_masks[i].cpu()),dtype=torch.float,device='cuda')
