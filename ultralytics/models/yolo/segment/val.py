@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
+from skimage.morphology import convex_hull_image
 from ultralytics.models.yolo.detect import DetectionValidator
 from ultralytics.utils import DEFAULT_CFG, LOGGER, NUM_THREADS, ops
 from ultralytics.utils.checks import check_requirements
@@ -152,13 +153,10 @@ class SegmentationValidator(DetectionValidator):
                 gt_masks = F.interpolate(gt_masks[None], pred_masks.shape[1:], mode='bilinear', align_corners=False)[0]
                 gt_masks = gt_masks.gt_(0.5)
             print("in process batch");
-            print(labels.shape)
-            print(detections.shape)
-            print(pred_masks.shape)
+
             tabIdx=detections[:,5]==3;
-            tabMasks=pred_masks[tabIdx]
-            print(tabMasks.shape);
-            print(torch.unique(tabMasks))
+            for i in tabIdx:
+                pred_masks[i]=torch.tensor(convex_hull_image(pred_masks[i]),dtype=torch.float)
             
             iou = mask_iou(gt_masks.view(gt_masks.shape[0], -1), pred_masks.view(pred_masks.shape[0], -1))
         else:  # boxes
