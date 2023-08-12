@@ -158,6 +158,7 @@ class SegmentationValidator(DetectionValidator):
             # tabIdx=detections[:,5]==3;
             if len(tabIdx)>0:
                 print((tabIdx));
+                print((detections[:,5]));
                 for i in tabIdx:
                     print("before")
                     print(torch.sum(pred_masks[i]))
