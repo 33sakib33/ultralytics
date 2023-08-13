@@ -153,8 +153,8 @@ class SegmentationValidator(DetectionValidator):
                 gt_masks = F.interpolate(gt_masks[None], pred_masks.shape[1:], mode='bilinear', align_corners=False)[0]
                 gt_masks = gt_masks.gt_(0.5)
             print("in process batch");
-            print(detections[:,:4]);
-            indices = torch.nonzero(detections[:, 5] == 1).squeez()
+            # print(detections[:,:4]);
+            indices = torch.nonzero(detections[:, 5] == 1).squeeze()
             if len(indices)>0:
                 print(indices);
                 print(detections[indices,:4]);
