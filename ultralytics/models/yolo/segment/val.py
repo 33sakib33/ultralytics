@@ -156,7 +156,7 @@ class SegmentationValidator(DetectionValidator):
             # print(detections[:,:4]);
             if len(detections)>0:
                 indices = torch.nonzero(detections[:, 5] == 1).squeeze()
-                if indices.size()[0]>0:
+                if indices:
                     print(indices);
                     print(detections[indices,:4]);
                     print(pred_masks.shape);
