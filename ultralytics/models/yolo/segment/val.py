@@ -154,12 +154,13 @@ class SegmentationValidator(DetectionValidator):
                 gt_masks = gt_masks.gt_(0.5)
             print("in process batch");
             # print(detections[:,:4]);
-            indices = torch.nonzero(detections[:, 5] == 1).squeeze()
-            if len(indices)>0:
-                print(indices);
-                print(detections[indices,:4]);
-                print(pred_masks.shape);
-            iou = mask_iou(gt_masks.view(gt_masks.shape[0], -1), pred_masks.view(pred_masks.shape[0], -1))
+            if len(detections)>0:
+                indices = torch.nonzero(detections[:, 5] == 1).squeeze()
+                if indices.size()[0]>0:
+                    print(indices);
+                    print(detections[indices,:4]);
+                    print(pred_masks.shape);
+                iou = mask_iou(gt_masks.view(gt_masks.shape[0], -1), pred_masks.view(pred_masks.shape[0], -1))
         else:  # boxes
             iou = box_iou(labels[:, 1:], detections[:, :4])
 
